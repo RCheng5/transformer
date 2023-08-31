@@ -56,7 +56,16 @@ T = T.transpose()
 T = torch.tensor(T).float()
 print(T.shape)
 ```
-Declare ODE using $$A = \begin{bmatrix} -2 & 1 \\ -4 & 1 \end{bmatrix}$$. Loads datapoints into tensor T.
+Declare ODE $x' = Ax$ using 
+```math
+A = \begin{bmatrix} -2 & 1 \\ -4 & 1 \end{bmatrix}
+```
+The initial condition is at $t=0$ and 
+```math
+\begin{bmatrix}0.67082039 \\ 1.78885438 \end{bmatrix}
+```
+This is just the sum of the eigenvectors $v_1$ and $v_2$
+Loads datapoints into tensor T.
 
 ```
 tf = torch.nn.Transformer(d_model=3, nhead=1, 
