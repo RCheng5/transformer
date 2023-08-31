@@ -64,8 +64,8 @@ The initial condition is at $t=0$ and
 ```math
 \begin{bmatrix}0.67082039 \\ 1.78885438 \end{bmatrix}
 ```
-This is just the sum of the eigenvectors $v_1$ and $v_2$
-Loads datapoints into tensor T.
+This is just the sum of the eigenvectors of $A$, $v_1$ and $v_2$.
+To find the curve described by this equation, I used python to find the 2 eigenvectors $v_1$ and $v_2$ and their respective eigenvalues of $\lambda_1$ and $\lambda_2$. Then the solution is described by the equation $$x(t) = Cv_1e^{\lambda_1 t} + Dv_2e^{\lambda_2 t}$$ where $C$ and $D$ are arbitrary constants. For the curve I generated, I used $C=D=1$ so the curve follows the equation $x(t) = v_1e^{\lambda_1 t} + v_2e^{\lambda_2 t}$ where $0 \leq t < 6$. I generated data points on the curve at intervals of $dt = 0.1$. This code generates the data points and plots them. This also loads datapoints into tensor T.
 
 ```
 tf = torch.nn.Transformer(d_model=3, nhead=1, 
