@@ -56,7 +56,7 @@ T = T.transpose()
 T = torch.tensor(T).float()
 print(T.shape)
 ```
-Declare ODE using $A = \begin{bmatrix} -2 & 1 \\ -4 & 1 \end{bmatrix}$. Loads datapoints into tensor T.
+Declare ODE using $$A = \begin{bmatrix} -2 & 1 \\ -4 & 1 \end{bmatrix}$$. Loads datapoints into tensor T.
 
 ```
 tf = torch.nn.Transformer(d_model=3, nhead=1, 
