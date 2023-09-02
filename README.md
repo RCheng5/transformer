@@ -168,6 +168,7 @@ if 2 in task:
 print(X.shape)
 ```
 Prediction
+Starting from a batch at position 0, predictions are mad for each 
 ```
 Y = X.detach().squeeze(0).numpy()
 plt.figure()
