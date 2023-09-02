@@ -65,7 +65,7 @@ The initial condition is at $t=0$ and
 \begin{bmatrix}0.67082039 \\ 1.78885438 \end{bmatrix}
 ```
 This is just the sum of the eigenvectors of $A$, $v_1$ and $v_2$.
-To find the curve described by this equation, I used python to find the 2 eigenvectors $v_1$ and $v_2$ and their respective eigenvalues of $\lambda_1$ and $\lambda_2$. Then the solution is described by the equation $$x(t) = Cv_1e^{\lambda_1 t} + Dv_2e^{\lambda_2 t}$$ where $C$ and $D$ are arbitrary constants. For the curve I generated, I used $C=D=1$ so the curve follows the equation $x(t) = v_1e^{\lambda_1 t} + v_2e^{\lambda_2 t}$ where $0 \leq t < 6$. I generated data points on the curve at intervals of $dt = 0.1$. This code generates the data points and plots them. This also loads datapoints into tensor T.
+To find the curve described by this equation, I used python to find the 2 eigenvectors $v_1$ and $v_2$ and their respective eigenvalues of $\lambda_1$ and $\lambda_2$. Then the solution is described by the equation $$x(t) = Cv_1e^{\lambda_1 t} + Dv_2e^{\lambda_2 t}$$ where $C$ and $D$ are arbitrary constants. For the curve I generated, I used $C=D=1$ so the curve follows the equation $x(t) = v_1e^{\lambda_1 t} + v_2e^{\lambda_2 t}$ where $0 \leq t < 6$. I generated data points on the curve at intervals of $dt = 0.1$. This code generates the data points and plots them. Each datapoint is a tensor of size 3, with the 1st dimension being x-value, 2nd dimension being y-value, and 3rd dimension being the time t. The datapoints are loaded into a tensor T with size $60\times3$ where $60$ is the total number of datapoints generated.
 
 ```
 tf = torch.nn.Transformer(d_model=3, nhead=1, 
@@ -104,6 +104,7 @@ print('z =', z)
 print(x[0, :-1, :])
 ```
 Convert datapoints into batches for feeding. The number of dimensions is $3$ from $x, y, t$.
+get_seq() is supposed to generate batches. S is the tensor of datapoints passed in, in this case S will be T. pos is the beginning datapoint of the batch. size is the size of the batch. It returns x, y, h where x is a tensor of size $1\times 8 \times 3$ consisting of the datapoints between pos and pos + size - 1. y is a tensor of size $1 \times 1 \times 3$ consisting of the datapoint at pos + size. h is a tensor of size $1\times 1\times 3$ where each variable is 0.
 ```
 # train
 S = T[:30, :]
@@ -137,6 +138,7 @@ time1 = time()
 print('time elapsed', time1 - time0, 'sec')
 ```
 Trains the model
+The tensor S is a tensor of size $30\times 3$ and consists of the first 30 datapoints in T. These will be fed into the transformer for training. Stochastic gradient descent (SGD) was the optimizer used and the loss function is N1loss. seq is the number of datapoints in each batch. In this case, seq is 8. The number of epochs is 400. During each epoch, lst is generated which is a random permutation of the numbers from 0 to S.size(0)-seq, that is a permutation of all the possible starting positions of each batch. A batch is created from get_seq(S, pos, size=seq) from each pos in lst. x and h from each batch are fed into the transformer to produce yp, a tensor of size $1\times 1 \times 3$ that is the predicted value of y from x. The transformer is optimized comparing y and yp.
 ```
 # prediction
 X, y, h = get_seq(S, 0)
