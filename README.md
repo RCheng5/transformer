@@ -168,11 +168,11 @@ if 2 in task:
 print(X.shape)
 ```
 Prediction
-Starting from a batch at position 0, predictions are mad for each 
+Starting from a batch of size 8 at t = 0, predictions are made for each batch of size 8 for each point in the original curve. The predicted points are stored in X.
 ```
 Y = X.detach().squeeze(0).numpy()
 plt.figure()
 plt.plot(T[:, 0], T[:, 1], '.')
 plt.plot(Y[:, 0], Y[:, 1], 'r')
 ```
-Outputs predicted curve relative to actual curve.
+Outputs predicted curve (red) relative to actual curve (blue).
