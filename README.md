@@ -103,8 +103,7 @@ print('z =', z)
 
 print(x[0, :-1, :])
 ```
-Convert datapoints into batches for feeding. The number of dimensions is $3$ from $x, y, t$.
-get_seq() is supposed to generate batches. S is the tensor of datapoints passed in, in this case S will be T. pos is the beginning datapoint of the batch. size is the size of the batch. It returns x, y, h where x is a tensor of size $1\times 8 \times 3$ consisting of the datapoints between pos and pos + size - 1. y is a tensor of size $1 \times 1 \times 3$ consisting of the datapoint at pos + size. h is a tensor of size $1\times 1\times 3$ where each variable is 0.
+Convert datapoints into batches for feeding. get_seq() is the function for generating batches. S is the tensor of datapoints passed in, in this case S will be T. pos is the beginning datapoint of the batch. size is the size of the batch. It returns x, y, h where x is a tensor of size $1\times 8 \times 3$ consisting of the datapoints between pos and pos + size - 1. y is a tensor of size $1 \times 1 \times 3$ consisting of the datapoint at pos + size. h is a tensor of size $1\times 1\times 3$ where each variable is 0. x and h will be passed into the model for training.
 ```
 # train
 S = T[:30, :]
@@ -168,7 +167,7 @@ if 2 in task:
 print(X.shape)
 ```
 Prediction
-Starting from a batch of size 8 at t = 0, predictions are made for each batch of size 8 for each point in the original curve. The predicted points are stored in X.
+For each datapoint t from $0 \leq t \leq 6$, and at intervals of $dt = 0.1$, tf(x, h) (tf is the transformer model) is calculated where x is a tensor of 8 datapoints of starting from t and h indicates the time for the model to make a prediction at. tf(x, h) outputs a predicted point at the time  The predicted points are stored in X.
 ```
 Y = X.detach().squeeze(0).numpy()
 plt.figure()
