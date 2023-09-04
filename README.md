@@ -170,6 +170,7 @@ Prediction
 tf is the transformer model. The first 8 datapoints are loaded into x. h is a tensor of the indicating the time of the next point. The transformer outputs a tensor z from z = tf(x, h) and z is the predicted next datapoint on the curve. 
 
 For example, in the first iteration, the known datapoints from $t = 0, 0.1, 0.2, ..., 0.7$ are loaded in to the transformer and h is fed in where h is (0, 0, 0.8). The x tensor fed in looks like this, 
+```
 x = tensor([[[0.6708, 1.7889, 0.0000],
          [0.7068, 1.6867, 0.1000],
          [0.7258, 1.5623, 0.2000],
@@ -178,12 +179,19 @@ x = tensor([[[0.6708, 1.7889, 0.0000],
          [0.6953, 1.0994, 0.5000],
          [0.6609, 0.9292, 0.6000],
          [0.6173, 0.7576, 0.7000]]])
-and h =  tensor([[[0.0000, 0.0000, 0.8000]]])
+```
+and 
+```
+h =  tensor([[[0.0000, 0.0000, 0.8000]]])
+```
 From this, z is calculated where 
+```
 z = tensor([[[0.3130, 0.1434, 0.8892]]]
+```
 z is the next datapoint.
 
 After each iteration, a new batch of 8 is created with the last 7 points in the original batch being the first 7 in the new batch and with the calculated z being the last point in the batch. For example, in the second iteration,
+```
 x =  tensor([[[0.7068, 1.6867, 0.1000],
          [0.7258, 1.5623, 0.2000],
          [0.7293, 1.4200, 0.3000],
@@ -192,8 +200,11 @@ x =  tensor([[[0.7068, 1.6867, 0.1000],
          [0.6609, 0.9292, 0.6000],
          [0.6173, 0.7576, 0.7000],
          [0.3130, 0.1434, 0.8892]]])
+```
 h will just indicate the time where the next datapoint should be calculated. For the second iteration, 
+```
 h =  tensor([[[0.0000, 0.0000, 0.9000]]])
+```
 Then another z is calculated and we continue to iterate until we have gone through all the datapoints.
 All the z's will be stored in X so that we can created a predicted curve from the predicted points.
 ```
