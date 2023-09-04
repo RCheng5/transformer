@@ -104,6 +104,24 @@ print('z =', z)
 print(x[0, :-1, :])
 ```
 Convert datapoints into batches for feeding. get_seq() is the function for generating batches. S is the tensor of datapoints passed in, in this case S will be T. pos is the beginning datapoint of the batch. size is the size of the batch. It returns x, y, h where x is a tensor of size $1\times 8 \times 3$ consisting of the datapoints between pos and pos + size - 1. y is a tensor of size $1 \times 1 \times 3$ consisting of the datapoint at pos + size. h is a tensor of size $1\times 1\times 3$ where each variable is 0. x and h will be passed into the model for training.
+For example, 
+```
+x, y, h = get_seq(T, 0)
+```
+creates 
+```
+x = tensor([[[0.6708, 1.7889, 0.0000],
+         [0.7068, 1.6867, 0.1000],
+         [0.7258, 1.5623, 0.2000],
+         [0.7293, 1.4200, 0.3000],
+         [0.7186, 1.2643, 0.4000],
+         [0.6953, 1.0994, 0.5000],
+         [0.6609, 0.9292, 0.6000],
+         [0.6173, 0.7576, 0.7000]]])
+y = tensor([[[0.5661, 0.5880, 0.8000]]])
+h = tensor([[[0.0000, 0.0000, 0.8000]]])
+```
+These batches will be used for training.
 ```
 # train
 S = T[:30, :]
@@ -166,7 +184,6 @@ if 2 in task:
 
 print(X.shape)
 ```
-Prediction
 tf is the transformer model. The first 8 datapoints are loaded into x. h is a tensor of the indicating the time of the next point. The transformer outputs a tensor z from z = tf(x, h) and z is the predicted next datapoint on the curve. 
 
 For example, in the first iteration, the known datapoints from $t = 0, 0.1, 0.2, ..., 0.7$ are loaded in to the transformer and h is fed in where h is (0, 0, 0.8). The x tensor fed in looks like this, 
